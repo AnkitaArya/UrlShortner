@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.url.transform.domain.UrlShortnerResource;
-import com.url.transform.service.UrlShortnerService;
+import com.url.transform.service.UrlShortnerServiceImpl;
 
 @RestController
 @RequestMapping(value = "/rest/url")
 public class UrlDetailsController {
 @Autowired
-UrlShortnerService shortnerService;
+UrlShortnerServiceImpl shortnerService;
 	
 	@PutMapping
 	 ResponseEntity<UrlShortnerResource> shortenUrl(@RequestBody final String longUrl){
