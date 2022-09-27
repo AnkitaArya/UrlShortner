@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.url.transform.domain.UrlShortnerResource;
 import com.url.transform.entity.UrlEntity;
 import com.url.transform.repository.UrlDetailsRepository;
 
@@ -14,7 +15,8 @@ public class UrlShortnerService {
 	@Autowired
 	UrlDetailsRepository detailsRepository;
 	
-	public String shortenUrl(String fullUrl){
+	public UrlShortnerResource shortenUrl(String fullUrl){
+		UrlShortnerResource resource = new UrlShortnerResource();
 		String shortUrl = null;
 		String domain = "http://shortUrl/";
 		if(fullUrl!=null) {
@@ -36,14 +38,14 @@ public class UrlShortnerService {
 				detailsRepository.save(entityCreated);
 			}
 		}
+		resource.setShortUrl(shortUrl);
 		
-		return shortUrl;
+		return resource;
 		
 		
 	}
 	
 	private String encryptShortUrlId(Long id) {
-		Map<Integer, String> idEncyptMap = new HashMap<Integer, String>();
 		char possibleChars[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 		int base = 62;
 		StringBuilder strBldr = new StringBuilder();
@@ -59,20 +61,21 @@ public class UrlShortnerService {
         return detailsRepository.save(new UrlEntity(fullUrl));
     }
 	
-	public String getFullurl(String shortUrl){
+	public UrlShortnerResource getFullurl(String shortUrl){
+		UrlShortnerResource resource = new UrlShortnerResource();
 		String fullUrl = null;
 		if(shortUrl!=null) {
 			//check if the url already exists in DB
 			UrlEntity entity = detailsRepository.findByShortUrl(shortUrl);
 			if(entity!=null && (entity.getFullUrl()!=null) &&  (entity.getShortUrl()!=null)) {
 				fullUrl = entity.getFullUrl();
+				resource.setFullurl(fullUrl);
 			}else {
 				//the URl is not available in system;
-				
 			}
 		}
 		
-		return fullUrl;
+		return resource;
 		
 		
 	}

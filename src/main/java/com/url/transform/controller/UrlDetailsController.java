@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.url.transform.domain.UrlShortnerResource;
 import com.url.transform.service.UrlShortnerService;
 
 @RestController
@@ -18,12 +19,12 @@ public class UrlDetailsController {
 UrlShortnerService shortnerService;
 	
 	@PutMapping
-	 ResponseEntity<Object> shortenUrl(@RequestBody final String longUrl){
+	 ResponseEntity<UrlShortnerResource> shortenUrl(@RequestBody final String longUrl){
 		return ResponseEntity.ok(shortnerService.shortenUrl(longUrl));
 	}
 	
 	@GetMapping
-	 ResponseEntity<Object> getLongUrl(@RequestParam ("url") String url){
+	 ResponseEntity<UrlShortnerResource> getLongUrl(@RequestParam ("url") String url){
 		return ResponseEntity.ok(shortnerService.getFullurl(url));
 	}
 
