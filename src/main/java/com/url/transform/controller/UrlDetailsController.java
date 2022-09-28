@@ -1,5 +1,7 @@
 package com.url.transform.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +17,20 @@ import com.url.transform.service.UrlShortnerServiceImpl;
 @RestController
 @RequestMapping(value = "/rest/url")
 public class UrlDetailsController {
-@Autowired
-UrlShortnerServiceImpl shortnerService;
-	
+	Logger log = LoggerFactory.getLogger(UrlDetailsController.class);
+
+	@Autowired
+	UrlShortnerServiceImpl shortnerService;
+
 	@PutMapping
-	 ResponseEntity<UrlShortnerResource> shortenUrl(@RequestBody final String longUrl){
+	ResponseEntity<UrlShortnerResource> shortenUrl(@RequestBody final String longUrl) {
+		log.debug("Generating short url for {}", longUrl);
 		return ResponseEntity.ok(shortnerService.shortenUrl(longUrl));
 	}
-	
+
 	@GetMapping
-	 ResponseEntity<UrlShortnerResource> getLongUrl(@RequestParam ("url") String url){
+	ResponseEntity<UrlShortnerResource> getLongUrl(@RequestParam("url") String url) {
+		log.debug("Fetching long url for {}", url);
 		return ResponseEntity.ok(shortnerService.getFullurl(url));
 	}
 
